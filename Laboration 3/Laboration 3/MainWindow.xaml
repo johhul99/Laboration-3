@@ -24,7 +24,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Användare:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox>
+                            <ListBox ItemsSource="{Binding AnvändarLista}" SelectedItem="{Binding SelectedAnvändare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -32,13 +32,14 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </StackPanel>
-                        <Button Content="Välj Användare" Width="100" Height="50" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                        <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                        <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20" HorizontalAlignment="Left" Margin="50,50,0,0"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Tillgängliga Pass">
@@ -54,25 +55,38 @@
                                 <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="2" Text="Lediga Platser:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox>
+                            <ListBox ItemsSource="{Binding PassLista}" Width="900">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="300"/>
+                                                <ColumnDefinition Width="300"/>
+                                                <ColumnDefinition Width="300"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0"/>
-                                            <TextBlock Grid.Column="1"/>
-                                            <TextBlock Grid.Column="2"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" Margin="5"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Tid}" Margin="5"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding AntalPlatser}" Margin="5"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </StackPanel>
-                        <Button Content="Boka" Width="100" Height="50" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                        <StackPanel Width="250" HorizontalAlignment="Left">
+                            <TextBlock Text="Pass Typ:"/>
+                            <ComboBox ItemsSource="{Binding PassTyper}" SelectedItem="{Binding SelectedPassTyp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Senaste tid:"/>
+                            <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> 
+                            <TextBlock Text="Tidigast tid:"/>
+                            <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Width="100" Height="50" Content="Filtrera"/>
+                            <TextBlock Height="100"/>
+                            <Button Content="Boka" Width="100" Height="50"/>
+                            <TextBlock Height="100"/>
+                            <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20"/>
+                            <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20"/>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Bokade Pass">
@@ -80,29 +94,35 @@
                         <StackPanel Width="900" HorizontalAlignment="Right">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="450"/>
+                                    <ColumnDefinition Width="450"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox>
+                            <ListBox ItemsSource="{Binding BokadePass1}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="450"/>
+                                                <ColumnDefinition Width="450"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0"/>
-                                            <TextBlock Grid.Column="1"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Tid}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </StackPanel>
-                        <Button Content="Avboka" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Height="50" Margin="50,0,0,0"/>
+                        <StackPanel Width="250" HorizontalAlignment="Left">
+                            <TextBlock Height="300"/>
+                            <Button Content="Avboka" Width="100" Height="50"/>
+                            <TextBlock Height="100"/>
+                            <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20"/>
+                            <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20"/>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
 
