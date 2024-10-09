@@ -5,8 +5,109 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Laboration_3"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="600" Width="1200">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <TabControl>
+                <TabItem Header="Startsida">
+                    <Grid>
+                        <TextBlock Text="Välkommen till Gym Gymmets Passbokningsportal!" FontSize="30" HorizontalAlignment="Center" Margin="0,50,0,0" FontWeight="Bold"/>
+                        <TextBlock Text="Vänligen se flikarna ovan för att välja användare och boka eller avboka pass!" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,300" FontSize="20"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Välj Användare">
+                    <Grid>
+                        <StackPanel Width="900" HorizontalAlignment="Right">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Användare:" FontWeight="Bold"/>
+                            </Grid>
+                            <ListBox>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
 
-    </Grid>
+                                            <TextBlock Grid.Column="0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                        <Button Content="Välj Användare" Width="100" Height="50" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Tillgängliga Pass">
+                    <Grid>
+                        <StackPanel Width="900" HorizontalAlignment="Right">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="2" Text="Lediga Platser:" FontWeight="Bold"/>
+                            </Grid>
+                            <ListBox>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"/>
+                                            <TextBlock Grid.Column="1"/>
+                                            <TextBlock Grid.Column="2"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                        <Button Content="Boka" Width="100" Height="50" HorizontalAlignment="Left" Margin="50,0,0,0"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Bokade Pass">
+                    <Grid>
+                        <StackPanel Width="900" HorizontalAlignment="Right">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
+                            </Grid>
+                            <ListBox>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"/>
+                                            <TextBlock Grid.Column="1"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                        <Button Content="Avboka" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100" Height="50" Margin="50,0,0,0"/>
+                    </Grid>
+                </TabItem>
+
+            </TabControl>
+
+        </Grid>
+    </ScrollViewer>
 </Window>
