@@ -55,7 +55,7 @@
                                 <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="2" Text="Lediga Platser:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox ItemsSource="{Binding PassLista}" Width="900">
+                            <ListBox ItemsSource="{Binding PassLista, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="900">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -67,7 +67,7 @@
 
                                             <TextBlock Grid.Column="0" Text="{Binding Namn}" Margin="5"/>
                                             <TextBlock Grid.Column="1" Text="{Binding Tid}" Margin="5"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding AntalPlatser}" Margin="5"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding AntalPlatser, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -82,7 +82,7 @@
                             <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <Button Width="100" Height="50" Content="Filtrera"/>
                             <TextBlock Height="100"/>
-                            <Button Content="Boka" Width="100" Height="50"/>
+                            <Button Content="Boka" Click="BokaPass_Click" Width="100" Height="50"/>
                             <TextBlock Height="100"/>
                             <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20"/>
                             <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20"/>
@@ -100,7 +100,7 @@
                                 <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox ItemsSource="{Binding BokadePass1}">
+                            <ListBox ItemsSource="{Binding BokadePass1, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
@@ -118,7 +118,7 @@
                         </StackPanel>
                         <StackPanel Width="250" HorizontalAlignment="Left">
                             <TextBlock Height="300"/>
-                            <Button Content="Avboka" Width="100" Height="50"/>
+                            <Button Content="Avboka" Click="AvbokaPass_Click" Width="100" Height="50"/>
                             <TextBlock Height="100"/>
                             <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20"/>
                             <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20"/>
