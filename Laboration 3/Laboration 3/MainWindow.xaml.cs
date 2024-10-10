@@ -51,8 +51,8 @@ namespace Laboration_3
             }
         }
 
-        private string _selectedPassTid;
-        public string SelectedPassTid
+        private TimeSpan _selectedPassTid;
+        public TimeSpan SelectedPassTid
         {
             get { return _selectedPassTid; }
             set
@@ -62,8 +62,8 @@ namespace Laboration_3
             }
         }
 
-        private string _selectedPassTid2;
-        public string SelectedPassTid2
+        private TimeSpan _selectedPassTid2;
+        public TimeSpan SelectedPassTid2
         {
             get { return _selectedPassTid2; }
             set
@@ -98,18 +98,31 @@ namespace Laboration_3
             }
         }
 
+        private ObservableCollection<Pass> _passLista;
+        public ObservableCollection<Pass> PassLista 
+        {
+            get { return _passLista; } 
+            set
+            {
+                _passLista = value;
+                OnPropertyChanged(nameof(PassLista));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             PassLista = new ObservableCollection<Pass>
             {
-                { new Pass( "Yoga A", "Flexibilitet", "17:00", 18) },
-                { new Pass( "Yoga B", "Flexibilitet", "18:15", 14) },
-                { new Pass( "Spinning A", "Kondition", "17:00", 22) },
-                { new Pass( "Spinning B", "Kondition", "18:30", 26) },
-                { new Pass( "Zumba A", "Dans", "18:15", 20) },
-                { new Pass( "Zumba B", "Dans", "17:30", 18) }
+                { new Pass( "Yoga A", "Flexibilitet", TimeSpan.Parse("17:00"), 18) },
+                { new Pass( "Yoga B", "Flexibilitet", TimeSpan.Parse("18:15"), 14) },
+                { new Pass( "Spinning A", "Kondition", TimeSpan.Parse("17:00"), 22) },
+                { new Pass( "Spinning B", "Kondition", TimeSpan.Parse("18:30"), 26) },
+                { new Pass( "Zumba A", "Dans", TimeSpan.Parse("18:15"), 20) },
+                { new Pass( "Zumba B", "Dans", TimeSpan.Parse("17:30"), 18) }
             };
+
+            OriginalPassLista = PassLista;
 
             AnvändarLista = new ObservableCollection<Användare>
             {
@@ -122,8 +135,13 @@ namespace Laboration_3
             BokadePass1 = SelectedAnvändare.BokadePass;
 
             PassTyper = PassLista.Select(p => p.PassTyp).Distinct().ToList();
+            PassTyper.Add("Alla");
 
             PassTider = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
+            PassTider.Insert(0, TimeSpan.Parse("00:01"));
+
+            PassTider2 = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
+            PassTider2.Add(TimeSpan.Parse("23:59"));
 
             SelectedPass = PassLista.FirstOrDefault();
 
@@ -131,23 +149,41 @@ namespace Laboration_3
 
             SelectedPassTid = PassTider.FirstOrDefault();
 
-            SelectedPassTid2 = PassTider.FirstOrDefault();
+            SelectedPassTid2 = PassTider2[PassTider2.Count - 1];
 
-            SelectedPassTyp = PassTyper.FirstOrDefault();
+            SelectedPassTyp = PassTyper[PassTyper.Count - 1];
 
             BH = new BokningsHantering();
 
             this.DataContext = this;
         }
 
+        private ObservableCollection<Pass> OriginalPassLista { get; set; }
         public BokningsHantering BH { get; set; }
-        public ObservableCollection<Pass> PassLista { get; set; }
         public List<string> PassTyper { get; set; }
-
-        public List<string> PassTider { get; set; }
-
+        public List<TimeSpan> PassTider { get; set; }
+        public List<TimeSpan> PassTider2 { get; set; }
         public ObservableCollection<Användare> AnvändarLista { get; set; }
 
+        public void FiltreraPass_Click(object sender, EventArgs e)
+        {
+            PassLista = BH.FiltreraPass(OriginalPassLista, SelectedPassTid, SelectedPassTid2, SelectedPassTyp);
+        }
+
+        public void ResetPassLista_MouseDown(object sender, MouseEventArgs e)
+        {
+            PassLista = OriginalPassLista;
+            PassTyper = PassLista.Select(p => p.PassTyp).Distinct().ToList();
+            PassTyper.Add("Alla");
+            PassTider = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
+            PassTider.Insert(0, TimeSpan.Parse("00:01"));
+            PassTider2 = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
+            PassTider2.Add(TimeSpan.Parse("23:59"));
+            SelectedPass = PassLista.FirstOrDefault();
+            SelectedPassTid = PassTider.FirstOrDefault();
+            SelectedPassTid2 = PassTider2[PassTider2.Count - 1];
+            SelectedPassTyp = PassTyper[PassTyper.Count - 1];
+        }
         public void BokaPass_Click(object sender, EventArgs e)
         {
             if (SelectedAnvändare.BokadePass.Contains(SelectedPass))
@@ -202,6 +238,19 @@ namespace Laboration_3
             return A.BokadePass;
         }
 
+        public ObservableCollection<Pass> FiltreraPass(ObservableCollection<Pass> P, TimeSpan tS, TimeSpan tS2, String T)
+        {
+            ObservableCollection<Pass> Result;
+            if (T == "Alla")
+            {
+                Result = new ObservableCollection<Pass>(P.Where(p => p.Tid >= tS && p.Tid <= tS2));
+            }
+            else
+            {
+                Result = new ObservableCollection<Pass>(P.Where(p => p.Tid >= tS && p.Tid <= tS2 && p.PassTyp == T));
+            }          
+            return Result;
+        }
         public int SubtraheraPlats(Pass P)
         {
             P.AntalPlatser--;
@@ -219,7 +268,7 @@ namespace Laboration_3
     {
         public string Namn { get; private set; }
         public string PassTyp { get; private set; }
-        public string Tid { get; private set; }
+        public TimeSpan Tid { get; private set; }
 
         private int _antalPlatser;
         public int AntalPlatser
@@ -235,7 +284,7 @@ namespace Laboration_3
             }
         }
 
-        public Pass(string namn, string passTyp, string tid, int antalPlatser)
+        public Pass(string namn, string passTyp, TimeSpan tid, int antalPlatser)
         {
             Namn = namn;
             PassTyp = passTyp;

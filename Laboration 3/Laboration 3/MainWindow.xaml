@@ -31,8 +31,7 @@
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-
-                                            <TextBlock Grid.Column="0" Text="{Binding Namn}"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" MouseDown="ResetPassLista_MouseDown"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -52,7 +51,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
-                                <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Starttid:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="2" Text="Lediga Platser:" FontWeight="Bold"/>
                             </Grid>
                             <ListBox ItemsSource="{Binding PassLista, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="900">
@@ -76,11 +75,11 @@
                         <StackPanel Width="250" HorizontalAlignment="Left">
                             <TextBlock Text="Pass Typ:"/>
                             <ComboBox ItemsSource="{Binding PassTyper}" SelectedItem="{Binding SelectedPassTyp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBlock Text="Senaste tid:"/>
-                            <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> 
-                            <TextBlock Text="Tidigast tid:"/>
-                            <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Width="100" Height="50" Content="Filtrera"/>
+                            <TextBlock Text="Tidigaste starttid:"/>
+                            <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="Senaste starttid:"/>
+                            <ComboBox ItemsSource="{Binding PassTider2}" SelectedItem="{Binding SelectedPassTid2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Width="100" Height="50" Content="Filtrera" Click="FiltreraPass_Click"/>
                             <TextBlock Height="100"/>
                             <Button Content="Boka" Click="BokaPass_Click" Width="100" Height="50"/>
                             <TextBlock Height="100"/>
@@ -98,7 +97,7 @@
                                     <ColumnDefinition Width="450"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="Pass:" FontWeight="Bold"/>
-                                <TextBlock Grid.Column="1" Text="Tid:" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Starttid:" FontWeight="Bold"/>
                             </Grid>
                             <ListBox ItemsSource="{Binding BokadePass1, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
