@@ -341,6 +341,7 @@ namespace Laboration_3
         }
 
     }
+
     public class Användare : INotifyPropertyChanged //Klass för användare med INotifyPropertyChanged för att hantera när BokadePass listan förändras vid bokning och avbokning.
     {
         public string Namn { get; private set; }
