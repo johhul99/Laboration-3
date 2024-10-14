@@ -9,4 +9,23 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Legs.png" />
+    <None Remove="Pull.PNG" />
+    <None Remove="Push1.PNG" />
+    <None Remove="Tevvez.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Legs.png" />
+    <Resource Include="Resources\Pull.PNG" />
+    <Resource Include="Resources\Push1.PNG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Tevvez.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>

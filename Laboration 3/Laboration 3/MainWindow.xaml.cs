@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Media;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -119,7 +120,10 @@ namespace Laboration_3
                 { new Pass( "Spinning A", "Kondition", TimeSpan.Parse("17:00"), 22) },
                 { new Pass( "Spinning B", "Kondition", TimeSpan.Parse("18:30"), 26) },
                 { new Pass( "Zumba A", "Dans", TimeSpan.Parse("18:15"), 20) },
-                { new Pass( "Zumba B", "Dans", TimeSpan.Parse("17:30"), 18) }
+                { new Pass( "Zumba B", "Dans", TimeSpan.Parse("17:30"), 18) },
+                { new Pass( "Push", "Styrka", TimeSpan.Parse("17:00"), 2) },
+                { new Pass( "Pull", "Styrka", TimeSpan.Parse("18:00"), 2) },
+                { new Pass( "Legs", "Styrka", TimeSpan.Parse("17:30"), 2) }
             };
 
             OriginalPassLista = PassLista;
@@ -127,7 +131,8 @@ namespace Laboration_3
             AnvändarLista = new ObservableCollection<Användare>
             {
                 { new Användare("Användare1") },
-                { new Användare("Användare2") }
+                { new Användare("Användare2") },
+                { new Användare("Användare3") }
             };
 
             SelectedAnvändare = AnvändarLista.FirstOrDefault();
@@ -159,7 +164,7 @@ namespace Laboration_3
         }
 
         private ObservableCollection<Pass> OriginalPassLista { get; set; }
-        public BokningsHantering BH { get; set; }
+        private BokningsHantering BH { get; set; }
         public List<string> PassTyper { get; set; }
         public List<TimeSpan> PassTider { get; set; }
         public List<TimeSpan> PassTider2 { get; set; }
@@ -172,29 +177,59 @@ namespace Laboration_3
 
         public void ResetPassLista_MouseDown(object sender, MouseEventArgs e)
         {
-            PassLista = OriginalPassLista;
-            PassTyper = PassLista.Select(p => p.PassTyp).Distinct().ToList();
-            PassTyper.Add("Alla");
-            PassTider = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
-            PassTider.Insert(0, TimeSpan.Parse("00:01"));
-            PassTider2 = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList();
-            PassTider2.Add(TimeSpan.Parse("23:59"));
+            PassLista = OriginalPassLista;            
             SelectedPass = PassLista.FirstOrDefault();
             SelectedPassTid = PassTider.FirstOrDefault();
             SelectedPassTid2 = PassTider2[PassTider2.Count - 1];
             SelectedPassTyp = PassTyper[PassTyper.Count - 1];
         }
-        public void BokaPass_Click(object sender, EventArgs e)
+        public async void BokaPass_Click(object sender, RoutedEventArgs r)
         {
             if (SelectedAnvändare.BokadePass.Contains(SelectedPass))
             {
                 MessageBox.Show($"Du är redan inbokad på {SelectedPass.Namn}");
             }
+            else if (SelectedPass.AntalPlatser == 0)
+            {
+                MessageBox.Show("Detta passet är fullbokat!");
+            }
             else
             {
+                Image img = new Image();
+                if (SelectedPass.Namn == "Push")
+                {
+                    img.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Push1.PNG"));
+                }
+                else if (SelectedPass.Namn == "Pull")
+                {
+                    img.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Pull.PNG"));
+                }
+                else if (SelectedPass.Namn == "Legs")
+                {
+                    img.Source = new BitmapImage(new Uri("pack://application:,,,/Resources/Legs.PNG"));
+                }     
+                
+                if(SelectedPass.PassTyp == "Styrka")
+                {
+                    Picture.Children.Add(img);
+                }
+
+                await Task.Delay(50);
+
+                if (Picture.Children.Contains(img))
+                {
+                    SoundPlayer player = new SoundPlayer(Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Tevvez.WAV")).Stream);
+                    player.PlaySync();
+                }
+
                 SelectedPass.AntalPlatser = BH.SubtraheraPlats(SelectedPass);
                 SelectedAnvändare.BokadePass = BH.BokaPass(SelectedAnvändare, SelectedPass);
-                MessageBox.Show($"Du har nu bokat {SelectedPass.Namn}. Välkommen in kl{SelectedPass.Tid}");
+                MessageBox.Show($"Du har nu bokat {SelectedPass.Namn}. Välkommen in kl {SelectedPass.Tid}!");
+                if (Picture.Children.Contains(img))
+                {
+                    Picture.Children.Remove(img);
+                }
+
             }
         }
 
@@ -215,6 +250,7 @@ namespace Laboration_3
                 SelectedAnvändare.BokadePass = BH.AvbokaPass(SelectedAnvändare, SelectedPass2);
             }                     
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

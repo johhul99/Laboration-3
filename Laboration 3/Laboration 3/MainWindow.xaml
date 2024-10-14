@@ -43,7 +43,7 @@
                 </TabItem>
                 <TabItem Header="Tillgängliga Pass">
                     <Grid>
-                        <StackPanel Width="900" HorizontalAlignment="Right">
+                        <StackPanel Width="900" HorizontalAlignment="Right" VerticalAlignment="Top" Height="250">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -54,30 +54,32 @@
                                 <TextBlock Grid.Column="1" Text="Starttid:" FontWeight="Bold"/>
                                 <TextBlock Grid.Column="2" Text="Lediga Platser:" FontWeight="Bold"/>
                             </Grid>
-                            <ListBox ItemsSource="{Binding PassLista, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="900">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="300"/>
-                                                <ColumnDefinition Width="300"/>
-                                                <ColumnDefinition Width="300"/>
-                                            </Grid.ColumnDefinitions>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ListBox ItemsSource="{Binding PassLista, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="900" Height="250">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="300"/>
+                                                    <ColumnDefinition Width="300"/>
+                                                    <ColumnDefinition Width="300"/>
+                                                </Grid.ColumnDefinitions>
 
-                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" Margin="5"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding Tid}" Margin="5"/>
-                                            <TextBlock Grid.Column="2" Text="{Binding AntalPlatser, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                                <TextBlock Grid.Column="0" Text="{Binding Namn}" Margin="5"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Tid}" Margin="5"/>
+                                                <TextBlock Grid.Column="2" Text="{Binding AntalPlatser, UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ScrollViewer>
                         </StackPanel>
                         <StackPanel Width="250" HorizontalAlignment="Left">
                             <TextBlock Text="Pass Typ:"/>
                             <ComboBox ItemsSource="{Binding PassTyper}" SelectedItem="{Binding SelectedPassTyp, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBlock Text="Tidigaste starttid:"/>
+                            <TextBlock Text="Tidigaste Starttid:"/>
                             <ComboBox ItemsSource="{Binding PassTider}" SelectedItem="{Binding SelectedPassTid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBlock Text="Senaste starttid:"/>
+                            <TextBlock Text="Senaste Starttid:"/>
                             <ComboBox ItemsSource="{Binding PassTider2}" SelectedItem="{Binding SelectedPassTid2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <Button Width="100" Height="50" Content="Filtrera" Click="FiltreraPass_Click"/>
                             <TextBlock Height="100"/>
@@ -86,6 +88,9 @@
                             <TextBlock Text="Du är nu inloggad som:" Width="150" Height="20"/>
                             <TextBlock Text="{Binding SelectedAnvändare.Namn}" Width="150" Height="20"/>
                         </StackPanel>
+                        <Grid x:Name="Picture" Width="1200" Height="600">
+                            
+                        </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Bokade Pass">
