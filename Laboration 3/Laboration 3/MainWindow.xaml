@@ -27,11 +27,11 @@
                             <ListBox ItemsSource="{Binding AnvändarLista}" SelectedItem="{Binding SelectedAnvändare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid>
+                                        <Grid MouseDown="ResetPassLista_MouseDown">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding Namn}" MouseDown="ResetPassLista_MouseDown"/>
+                                            <TextBlock Grid.Column="0" Text="{Binding Namn}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
