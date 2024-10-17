@@ -83,6 +83,7 @@ namespace Laboration_3
                 _selectedAnvändare = value;
                 OnPropertyChanged(nameof(SelectedAnvändare));
                 BokadePass1 = _selectedAnvändare?.BokadePass ?? new ObservableCollection<Pass>(); //Så att listan i avbokningsfönstret uppdateras till aktuell användares bokade pass.
+                ResetPassLista(); //Så att passlistan i boka pass fliken återställs vid byte av användare.
             }
 
 
@@ -135,7 +136,7 @@ namespace Laboration_3
                 { new Användare("Användare3") }
             };
 
-            SelectedAnvändare = AnvändarLista.FirstOrDefault(); //Sätter vald användare till den första i listan.
+            SelectedAnvändare = AnvändarLista[0]; //Sätter vald användare till den första i listan.
 
             BokadePass1 = SelectedAnvändare.BokadePass; //Sätter listan av pass i avbokningsfliken till användarens bokade pass
                                                         //vilket nu blir tom men hade man exempelvis hämtat från en databas hade det varit rätt lista från början.
@@ -150,12 +151,12 @@ namespace Laboration_3
             PassTider2 = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList(); //Så filtreringsalternativen för senaste starttid är en av varje existerande.
             PassTider2.Add(TimeSpan.Parse("23:59")); //Så att alternativet finns om användaren inte vill filtrera på senaste starttid.
 
-            SelectedPass = PassLista.FirstOrDefault(); //Sätter valda pass till det första i pass listan i bokningsfliken
+            SelectedPass = PassLista[0]; //Sätter valda pass till det första i pass listan i bokningsfliken
 
             SelectedPass2 = BokadePass1.FirstOrDefault(); //Sätter valda pass till det första i pass listan i avbokningsfliken
                                                           //vilket nu blir tom men hade man exempelvis hämtat från en databas hade det varit rätt lista från början.
 
-            SelectedPassTid = PassTider.FirstOrDefault(); //Sätter tidigaste start tid i filtreringen i bokningsfliken till 00:01.
+            SelectedPassTid = PassTider[0]; //Sätter tidigaste start tid i filtreringen i bokningsfliken till 00:01.
 
             SelectedPassTid2 = PassTider2[PassTider2.Count - 1]; //Sätter senaste start tid i filtreringen i bokningsfliken  till 23:59.
 
@@ -178,13 +179,32 @@ namespace Laboration_3
             PassLista = BH.FiltreraPass(OriginalPassLista, SelectedPassTid, SelectedPassTid2, SelectedPassTyp);
         }
 
-        public void ResetPassLista_MouseDown(object sender, MouseEventArgs e) //För att ställa om filtreringen och pass listan i bokningsfliken till original vid byte av användare.
+        public void ResetPassLista() //För att ställa om filtreringen och pass listan i bokningsfliken till original vid byte av användare.
         {
-            PassLista = OriginalPassLista;            
-            SelectedPass = PassLista.FirstOrDefault();
-            SelectedPassTid = PassTider.FirstOrDefault();
-            SelectedPassTid2 = PassTider2[PassTider2.Count - 1];
-            SelectedPassTyp = PassTyper[PassTyper.Count - 1];
+            if (OriginalPassLista != null && OriginalPassLista.Any())
+            {
+                PassLista = new ObservableCollection<Pass>(OriginalPassLista);
+            }
+
+            if (PassLista.Any())
+            {
+                SelectedPass = PassLista[0];
+            }
+
+            if(PassTider != null && PassTider.Any())
+            {
+                SelectedPassTid = PassTider[0];
+            }
+
+            if (PassTider2 != null && PassTider2.Any())
+            {
+                SelectedPassTid2 = PassTider2[PassTider2.Count - 1];
+            }
+
+            if(PassTyper != null && PassTyper.Any())
+            {
+                SelectedPassTyp = PassTyper[PassTyper.Count - 1];
+            }              
         }
         public async void BokaPass_Click(object sender, RoutedEventArgs r) //För att användare ska kunna boka pass med logik från BokningsHantering vid klick av bokningsknappen
                                                                            //men även hantering ifall användare försöker boka in sig på ett fullbokat pass eller ett de redan bokat.

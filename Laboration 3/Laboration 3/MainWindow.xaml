@@ -27,7 +27,7 @@
                             <ListBox ItemsSource="{Binding AnvändarLista}" SelectedItem="{Binding SelectedAnvändare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid MouseDown="ResetPassLista_MouseDown">
+                                        <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
