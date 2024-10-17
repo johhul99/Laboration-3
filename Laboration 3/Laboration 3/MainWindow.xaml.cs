@@ -83,7 +83,7 @@ namespace Laboration_3
                 _selectedAnvändare = value;
                 OnPropertyChanged(nameof(SelectedAnvändare));
                 BokadePass1 = _selectedAnvändare?.BokadePass ?? new ObservableCollection<Pass>(); //Så att listan i avbokningsfönstret uppdateras till aktuell användares bokade pass.
-                ResetPassLista(); //Så att passlistan i boka pass fliken återställs vid byte av användare.
+                BokaPassFlik_ToDefault(); //Så att passlistan i boka pass fliken återställs vid byte av användare.
             }
 
 
@@ -151,16 +151,10 @@ namespace Laboration_3
             PassTider2 = PassLista.Select(p => p.Tid).OrderBy(p => p).Distinct().ToList(); //Så filtreringsalternativen för senaste starttid är en av varje existerande.
             PassTider2.Add(TimeSpan.Parse("23:59")); //Så att alternativet finns om användaren inte vill filtrera på senaste starttid.
 
-            SelectedPass = PassLista[0]; //Sätter valda pass till det första i pass listan i bokningsfliken
+            BokaPassFlik_ToDefault();           
 
-            SelectedPass2 = BokadePass1.FirstOrDefault(); //Sätter valda pass till det första i pass listan i avbokningsfliken
-                                                          //vilket nu blir tom men hade man exempelvis hämtat från en databas hade det varit rätt lista från början.
-
-            SelectedPassTid = PassTider[0]; //Sätter tidigaste start tid i filtreringen i bokningsfliken till 00:01.
-
-            SelectedPassTid2 = PassTider2[PassTider2.Count - 1]; //Sätter senaste start tid i filtreringen i bokningsfliken  till 23:59.
-
-            SelectedPassTyp = PassTyper[PassTyper.Count - 1]; //Sätter passtyp vid filtrering i bokningsfliken till "Alla".
+            SelectedPass2 = BokadePass1.FirstOrDefault(); //Sätter valda pass till det första i pass listan i avbokningsfliken                                                        
+            //vilket nu blir tom men hade man exempelvis hämtat från en databas hade det varit rätt lista från början.
 
             BH = new BokningsHantering(); //Så det går att kalla på boknings- och filtreringsmetoder.
 
@@ -169,17 +163,17 @@ namespace Laboration_3
 
         private ObservableCollection<Pass> OriginalPassLista { get; set; } //Så att pass listan innan filtrering sparas.
         private BokningsHantering BH { get; set; } //För att kunna kalla på filtrerings och boknings/avbokningsmetoder.
-        public List<string> PassTyper { get; set; } //Denna och nedre två variabler för att spara listorna vid filtrering.
-        public List<TimeSpan> PassTider { get; set; }
+        public List<string> PassTyper { get; set; } //Denna och nedanstående två variabler för att spara listorna för alternativ vid filtrering.
+        public List<TimeSpan> PassTider { get; set; } 
         public List<TimeSpan> PassTider2 { get; set; }
-        public List<Användare> AnvändarLista { get; set; } //För att spara användar listan.
+        public List<Användare> AnvändarLista { get; set; } //För att spara användarlistan.
 
         public void FiltreraPass_Click(object sender, EventArgs e) //För att filtrera pass med logik från BokningsHanteringsklassen vid klick av filtreringsknappen.
         {
             PassLista = BH.FiltreraPass(OriginalPassLista, SelectedPassTid, SelectedPassTid2, SelectedPassTyp);
         }
 
-        public void ResetPassLista() //För att ställa om filtreringen och pass listan i bokningsfliken till original vid byte av användare.
+        public void BokaPassFlik_ToDefault() //För att ställa om filtreringen och passlistan i bokningsfliken till original.
         {
             if (OriginalPassLista != null && OriginalPassLista.Any())
             {
